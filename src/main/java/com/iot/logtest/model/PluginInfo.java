@@ -85,6 +85,12 @@ public class PluginInfo {
         }
     }
 
+    /**
+     * 重写equals方法判断插件信息是否相等
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean equals(Object obj) {
         if (null == obj) {
