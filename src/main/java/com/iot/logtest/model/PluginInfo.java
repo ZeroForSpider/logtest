@@ -86,6 +86,16 @@ public class PluginInfo {
     }
 
     /**
+     * 重写hashCode
+     *
+     * @return
+     */
+    @Override
+    public int hashCode() {
+        return (ouiName + factoryName + brand).hashCode();
+    }
+
+    /**
      * 重写equals方法判断插件信息是否相等
      *
      * @param obj

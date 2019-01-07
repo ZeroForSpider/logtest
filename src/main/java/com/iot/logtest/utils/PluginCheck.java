@@ -47,6 +47,7 @@ public class PluginCheck {
         //按插件分组
         Map<String, List<PluginInfo>> map = new HashMap<>();
         for (PluginInfo item : existList) {
+            System.out.println(item.getPluginName().hashCode());
             map.put(item.getPluginName(), new ArrayList<>());
         }
         //按插件分组的顺序，为每个插件添加厂家信息
