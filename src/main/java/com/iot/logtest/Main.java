@@ -1,13 +1,11 @@
 package com.iot.logtest;
 
-import com.iot.logtest.model.PluginInfo;
-import com.iot.logtest.utils.PluginCheck;
+import com.iot.logtest.ThreadPool.CustomerThreadPool;
+import com.iot.logtest.ThreadPool.TaskThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.function.BiConsumer;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author LHT
@@ -19,14 +17,17 @@ public class Main {
      */
     private final static Logger logger = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws IllegalAccessException {
-        //  生成10条插件数据
-        Map<String, List<PluginInfo>> map = PluginCheck.getPluginInfo(10);
-        PluginInfo pluginInfo = new PluginInfo("插件8", "oui80", "厂商80", "品牌80");
-        logger.info("共生成数据" + map.size() + "条");
-        logger.info("插件数据如下：\n" + map.toString());
-        logger.info("待查询插件如下：\n" + pluginInfo);
-        logger.info("查询结果为" + PluginCheck.checkIsInstallPlugin(map, pluginInfo).toString());
-
+    public static void main(String[] args) {
+        CustomerThreadPool customerThreadPool = new CustomerThreadPool();
+        //初始化线程池
+        customerThreadPool.initThreadPool();
+        //得到线程池
+        ExecutorService executorService = customerThreadPool.getCustomThreadPool();
+        for (int i = 0; i < 100; i++) {
+            logger.info("开始执行第"+i+"个任务");
+            executorService.execute(new TaskThread(i));
+        }
     }
+
 }
+
