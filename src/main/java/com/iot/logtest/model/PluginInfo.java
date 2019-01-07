@@ -1,6 +1,5 @@
 package com.iot.logtest.model;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,29 +15,25 @@ public class PluginInfo {
     /**
      * 插件名称
      */
-    private String pluginName = "";
+    private String pluginName;
 
     /**
      * Oui名称
      */
-    private String ouiName = "";
+    private String ouiName;
 
     /**
      * 厂商名称
      */
-    private String factoryName = "";
+    private String factoryName;
 
 
     /**
      * 型号
      */
-    private String brand = "";
+    private String model;
 
     public PluginInfo() {
-        this.pluginName = "";
-        this.ouiName = "";
-        this.factoryName = "";
-        this.brand = "";
     }
 
     @Override
@@ -47,15 +42,15 @@ public class PluginInfo {
                 "pluginName='" + pluginName + '\'' +
                 ", ouiName='" + ouiName + '\'' +
                 ", factoryName='" + factoryName + '\'' +
-                ", brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
                 '}';
     }
 
-    public PluginInfo(String pluginName, String ouiName, String factoryName, String brand) {
-        this.pluginName = pluginName == null ? "" : pluginName;
-        this.ouiName = ouiName == null ? "" : ouiName;
-        this.factoryName = factoryName == null ? "" : factoryName;
-        this.brand = brand;
+    public PluginInfo(String pluginName, String ouiName, String factoryName, String model) {
+        this.pluginName = pluginName;
+        this.ouiName = ouiName;
+        this.factoryName = factoryName;
+        this.model = model;
     }
 
     public String getPluginName() {
@@ -70,19 +65,8 @@ public class PluginInfo {
         return factoryName;
     }
 
-    public String getBrand() {
-        return brand;
-    }
-
-    /**
-     * 写入日志
-     *
-     * @param field
-     */
-    public void writeLog(String field) {
-        if (logger.isInfoEnabled()) {
-            logger.info("当前" + this.pluginName + "的" + field + "不等于待查询插件" + this.pluginName + "的" + field + ",返回结果为false");
-        }
+    public String getModel() {
+        return model;
     }
 
     /**
@@ -92,7 +76,7 @@ public class PluginInfo {
      */
     @Override
     public int hashCode() {
-        return (ouiName + factoryName + brand).hashCode();
+        return (ouiName + factoryName + model).hashCode();
     }
 
     /**
@@ -106,24 +90,14 @@ public class PluginInfo {
         if (null == obj) {
             return false;
         }
-        if (obj instanceof PluginInfo) {
-            PluginInfo pluginInfo = (PluginInfo) obj;
-            String field;
-            if (this.ouiName.equals(pluginInfo.ouiName)) {
-                if (this.factoryName.equals(pluginInfo.factoryName)) {
-                    if (this.brand.equals(pluginInfo.brand)) {
-                        return true;
-                    } else {
-                        field = "brand";
-                    }
-                } else {
-                    field = "factoryName";
-                }
-            } else {
-                field = "ouiName";
-            }
-            writeLog(field);
+        if (!(obj instanceof PluginInfo)) {
+            return false;
         }
-        return false;
+        PluginInfo pluginInfo = (PluginInfo) obj;
+        boolean oui = ouiName == null || ouiName.equals(pluginInfo.ouiName);
+        boolean factory = factoryName == null || factoryName.equals(pluginInfo.factoryName);
+        boolean modelOk = model == null || model.equals(pluginInfo.model);
+        return oui && factory && modelOk;
     }
+
 }
