@@ -1,11 +1,12 @@
 package com.iot.logtest;
 
+import com.iot.logtest.ThreadPool.CheckThreadPool;
 import com.iot.logtest.ThreadPool.CustomerThreadPool;
 import com.iot.logtest.ThreadPool.TaskThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.*;
 
 /**
  * @author LHT
@@ -23,6 +24,7 @@ public class Main {
         customerThreadPool.initThreadPool();
         //得到线程池
         ExecutorService executorService = customerThreadPool.getCustomThreadPool();
+        executorService.submit(new CheckThreadPool(customerThreadPool.getThreadPool()));
         for (int i = 0; i < 100; i++) {
             logger.info("开始执行第"+i+"个任务");
             executorService.execute(new TaskThread(i));
